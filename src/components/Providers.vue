@@ -1,8 +1,9 @@
 <template>
     <ul v-if="getProviders">
       <li  v-for="(provider, index) in getProviders" :key="index">
-        <input type="checkbox" :value="provider" v-model="selectedProviders" :id="'provider'+index"/>
-        <label :for="'provider'+index" class="logos-flex-item">
+          <input type="checkbox" :value="provider" v-on:change="filterProductsByProvider" 
+            v-model="selectedProviderSet" :id="'provider'+index"/>
+          <label :for="'provider'+index">
           <img :src="provider.url" alt="">
         </label>
       </li>
@@ -12,7 +13,6 @@
 <script>
 import { mapGetters } from 'vuex';
 
-
 export default {
   computed: {
     ...mapGetters([
@@ -21,9 +21,19 @@ export default {
   },
   data(){
         return {
-            selectedProviders: [],
+          selectedProviderSet: [],
         }
     },
+  methods: {
+    filterProductsByProvider(){
+      let providerSet = this.selectedProviderSet.map((provider) => provider.name);
+      let providerProducts = this.$store.getters.getProducts.filter((prod) => {
+        return providerSet.includes(prod.provider) ;
+      });
+
+      this.$emit('change', providerProducts);
+    }
+  }
 }
 </script>
 

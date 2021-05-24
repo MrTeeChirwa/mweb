@@ -67,7 +67,6 @@ export default new Vuex.Store({
     },
 
     loadProducts: (context, promocodes) => {
-      // console.log(promocodes);
       axios
         .get(
           `${
@@ -80,7 +79,7 @@ export default new Vuex.Store({
             (prods, pc) => [...prods, ...getProductsFromPromo(pc)],
             []
           );
-
+          // console.log(summarizedProducts);
           context.commit("SET_PRODUCTS", summarizedProducts);
         })
         .then(() => {
@@ -96,7 +95,7 @@ export default new Vuex.Store({
         });
     },
     loadProviders: (context, providers) => {
-      // console.log([...new Set(context.state.products.map((p) => p.provider))]);
+      // console.log(providers);
       context.commit("SET_PROVIDERS", providers);
     },
   },
